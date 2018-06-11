@@ -37,6 +37,8 @@ import com.example.android.pets.data.PetDbHelper;
  */
 public class CatalogActivity extends AppCompatActivity {
 
+    private PetDbHelper DbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,10 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
+        // To access our database, we instantiate our subclass of SQLiteOpenHelper
+        // and pass the context, which is the current activity.
+        DbHelper = new PetDbHelper(this);
+
       displayDatabaseInfo();
     }
     /**
@@ -59,12 +65,9 @@ public class CatalogActivity extends AppCompatActivity {
      * the pets database.
      */
     private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        PetDbHelper mDbHelper = new PetDbHelper(this);
 
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        SQLiteDatabase db = DbHelper.getReadableDatabase();
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
@@ -82,9 +85,7 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void insertPet(){
-        PetDbHelper DbHelper = new PetDbHelper(this);
-
-        //Gets the data repository in write mode
+               //Gets the data repository in write mode
         SQLiteDatabase db = DbHelper.getWritableDatabase();
 
 
@@ -96,7 +97,7 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
 
         //Insert a new row, returning the primary key value of the new row.
-        db.insert(PetEntry.TABLE_NAME, null, values);
+        long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
 
     }
 
