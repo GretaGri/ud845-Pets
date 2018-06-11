@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,7 +27,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+
 import com.example.android.pets.data.PetContract;
+import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.data.PetDbHelper;
 
 /**
@@ -48,8 +51,8 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
-        displayDatabaseInfo();
+
+      displayDatabaseInfo();
     }
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
@@ -77,6 +80,27 @@ public class CatalogActivity extends AppCompatActivity {
             cursor.close();
         }
     }
+
+    private void insertPet(){
+        PetDbHelper DbHelper = new PetDbHelper(this);
+
+        //Gets the data repository in write mode
+        SQLiteDatabase db = DbHelper.getWritableDatabase();
+
+
+        //Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(PetEntry.COLUMN_PET_NAME, "Toto");
+        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
+        values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
+        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
+
+        //Insert a new row, returning the primary key value of the new row.
+        db.insert(PetEntry.TABLE_NAME, null, values);
+
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -91,7 +115,8 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-                // Do nothing for now
+                insertPet();
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
