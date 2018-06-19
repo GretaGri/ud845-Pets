@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 
@@ -105,10 +106,36 @@ public class PetProvider extends ContentProvider {
     /**
      * Insert new data into the provider with the given ContentValues.
      */
-    @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
-    }
+        @Override
+        public Uri insert(Uri uri, ContentValues contentValues) {
+            final int match = sUriMatcher.match(uri);
+            switch (match) {
+                case PETS:
+                    return insertPet(uri, contentValues);
+                default:
+                    throw new IllegalArgumentException("Insertion is not supported for " + uri);
+            }
+        }
+
+/**
+ * Insert a pet into the database with the given content values. Return the new content URI
+ * for that specific row in the database.
+ */
+        private Uri insertPet(Uri uri, ContentValues values) {
+
+            // Insert a new pet into the pets database table with the given ContentValues
+            //Gets the data repository in write mode
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            //Insert a new row, returning the primary key value of the new row.
+            long id = db.insert(PetEntry.TABLE_NAME, null, values);
+            // Once we know the ID of the new row in the table,
+            // return the new URI with the ID appended to the end of it
+            if (id == -1) Toast.makeText(getContext(),"Error with saving pet", Toast.LENGTH_LONG).show();
+            else Toast.makeText(getContext(),"Pet saved", Toast.LENGTH_LONG).show();
+
+            return ContentUris.withAppendedId(uri, id);
+        }
 
     /**
      * Updates the data at the given selection and selection arguments, with the new ContentValues.

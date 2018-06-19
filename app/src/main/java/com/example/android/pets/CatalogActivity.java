@@ -19,6 +19,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,9 @@ import com.example.android.pets.data.PetDbHelper;
 public class CatalogActivity extends AppCompatActivity {
 
     private PetDbHelper DbHelper;
+
+    // Defines a new Uri object that receives the result of the insertion
+    private Uri newUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +131,6 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void insertPet(){
-               //Gets the data repository in write mode
-        SQLiteDatabase db = DbHelper.getWritableDatabase();
-
 
         //Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -138,9 +139,10 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
 
-        //Insert a new row, returning the primary key value of the new row.
-        long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
-
+        newUri = getContentResolver().insert(
+                PetContract.PetEntry.CONTENT_URI,   // the pets table content URI
+                values                        // the values to insert
+        );
     }
 
 
