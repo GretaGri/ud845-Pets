@@ -109,6 +109,7 @@ public class PetProvider extends ContentProvider {
      */
         @Override
         public Uri insert(Uri uri, ContentValues contentValues) {
+
             final int match = sUriMatcher.match(uri);
             switch (match) {
                 case PETS:
@@ -123,6 +124,24 @@ public class PetProvider extends ContentProvider {
  * for that specific row in the database.
  */
         private Uri insertPet(Uri uri, ContentValues values) {
+
+            // Check that the name is not null
+            String name = values.getAsString(PetEntry.COLUMN_PET_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Pet requires a name");
+            }
+
+            // Check that the gender is valid
+            Integer gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
+            if ( gender == null ||! PetEntry.isValidGender(gender)) {
+                throw new IllegalArgumentException("Pet requires a correct gender");
+            }
+
+            // Check that the weight is valid
+            Integer weight = values.getAsInteger(PetEntry.COLUMN_PET_WEIGHT);
+            if (weight != null && weight<0) {
+                throw new IllegalArgumentException("Pet requires a positive weight");
+            }
 
             // Insert a new pet into the pets database table with the given ContentValues
             //Gets the data repository in write mode
