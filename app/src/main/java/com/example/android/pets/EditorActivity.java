@@ -139,6 +139,15 @@ public class EditorActivity extends AppCompatActivity {
                 PetContract.PetEntry.CONTENT_URI,   // the pets table content URI
                 values                        // the values to insert
         );
+        // Show a toast message depending on whether or not the insertion was successful
+        if (newUri == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, R.string.error_saving_pet, Toast.LENGTH_LONG).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, R.string.pet_saved,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

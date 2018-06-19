@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
@@ -131,8 +132,9 @@ public class PetProvider extends ContentProvider {
             long id = db.insert(PetEntry.TABLE_NAME, null, values);
             // Once we know the ID of the new row in the table,
             // return the new URI with the ID appended to the end of it
-            if (id == -1) Toast.makeText(getContext(),"Error with saving pet", Toast.LENGTH_LONG).show();
-            else Toast.makeText(getContext(),"Pet saved", Toast.LENGTH_LONG).show();
+            if (id == -1) {
+                Log.e(LOG_TAG, "Failed to insert row for " + uri);
+                return null;}
 
             return ContentUris.withAppendedId(uri, id);
         }
