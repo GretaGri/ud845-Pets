@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
 
@@ -40,7 +39,7 @@ public class PetProvider extends ContentProvider {
         // when a match is found.
 
         // Added 2 content URIs to URI matcher
-        sUriMatcher.addURI(PetEntry.CONTENT_AUTHORITY,PetEntry.PATH_PETS,PETS );
+        sUriMatcher.addURI(PetEntry.CONTENT_AUTHORITY, PetEntry.PATH_PETS,PETS );
         sUriMatcher.addURI(PetEntry.CONTENT_AUTHORITY,PetEntry.PATH_PETS + "/#",PET_ID);
     }
 
