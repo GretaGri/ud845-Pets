@@ -84,6 +84,11 @@ public class CatalogActivity extends AppCompatActivity {
         Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
         // Find ListView to populate
         ListView petList = findViewById(R.id.list_view_pet);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        petList.setEmptyView(emptyView);
+
         // Setup cursor adapter using cursor
         PetCursorAdapter petAdapter = new PetCursorAdapter(this, cursor);
         // Attach cursor adapter to the ListView
