@@ -131,37 +131,74 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
-    private void insertPet(){
-      String petName = mNameEditText.getText().toString().trim();
-      String petBreed = mBreedEditText.getText().toString().trim();
-      Integer petGender = mGender;
-      Integer petWeight = Integer.parseInt(mWeightEditText.getText().toString().trim());
+    private void savePet(){
+        if (itemUri!=null) {
+            String petName = mNameEditText.getText().toString().trim();
+            String petBreed = mBreedEditText.getText().toString().trim();
+            Integer petGender = mGender;
+            Integer petWeight = Integer.parseInt(mWeightEditText.getText().toString().trim());
 
-        //Create a new map of values, where column names are the keys
-        // Defines an object to contain the new values to insert
-        ContentValues values = new ContentValues();
-        /*
-         * Sets the values of each column and inserts the word. The arguments to the "put"
-         * method are "column name" and "value"
-         */
-        values.put(PetEntry.COLUMN_PET_NAME, petName);
-        values.put(PetEntry.COLUMN_PET_BREED, petBreed);
-        values.put(PetEntry.COLUMN_PET_GENDER,petGender);
-        values.put(PetEntry.COLUMN_PET_WEIGHT, petWeight);
+            //Create a new map of values, where column names are the keys
+            // Defines an object to contain the new values to insert
+            ContentValues values = new ContentValues();
+            /*
+             * Sets the values of each column and inserts the word. The arguments to the "put"
+             * method are "column name" and "value"
+             */
+            values.put(PetEntry.COLUMN_PET_NAME, petName);
+            values.put(PetEntry.COLUMN_PET_BREED, petBreed);
+            values.put(PetEntry.COLUMN_PET_GENDER, petGender);
+            values.put(PetEntry.COLUMN_PET_WEIGHT, petWeight);
 
 
-        newUri = getContentResolver().insert(
-                PetContract.PetEntry.CONTENT_URI,   // the pets table content URI
-                values                        // the values to insert
-        );
-        // Show a toast message depending on whether or not the insertion was successful
-        if (newUri == null) {
-            // If the new content URI is null, then there was an error with insertion.
-            Toast.makeText(this, R.string.error_saving_pet, Toast.LENGTH_LONG).show();
-        } else {
-            // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(this, R.string.pet_saved,
-                    Toast.LENGTH_SHORT).show();
+            int updatedRow = getContentResolver().update(
+                    itemUri,   // the pets table content URI
+                    values,    // the values to insert
+                    null,
+                    null
+            );
+            // Show a toast message depending on whether or not the insertion was successful
+            if (updatedRow == 0) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, R.string.error_updating_pet, Toast.LENGTH_LONG).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, R.string.pet_updated,
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            String petName = mNameEditText.getText().toString().trim();
+            String petBreed = mBreedEditText.getText().toString().trim();
+            Integer petGender = mGender;
+            Integer petWeight = Integer.parseInt(mWeightEditText.getText().toString().trim());
+
+            //Create a new map of values, where column names are the keys
+            // Defines an object to contain the new values to insert
+            ContentValues values = new ContentValues();
+            /*
+             * Sets the values of each column and inserts the word. The arguments to the "put"
+             * method are "column name" and "value"
+             */
+            values.put(PetEntry.COLUMN_PET_NAME, petName);
+            values.put(PetEntry.COLUMN_PET_BREED, petBreed);
+            values.put(PetEntry.COLUMN_PET_GENDER, petGender);
+            values.put(PetEntry.COLUMN_PET_WEIGHT, petWeight);
+
+
+            newUri = getContentResolver().insert(
+                    PetContract.PetEntry.CONTENT_URI,   // the pets table content URI
+                    values                        // the values to insert
+            );
+            // Show a toast message depending on whether or not the insertion was successful
+            if (newUri == null) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, R.string.error_saving_pet, Toast.LENGTH_LONG).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, R.string.pet_saved,
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -180,7 +217,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 // Save pet to database
-                insertPet();
+                savePet();
                 //Exit activity
                 finish();
                 return true;

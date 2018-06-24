@@ -62,10 +62,16 @@
     <!-- Toast text when pet saving ends with error [CHAR LIMIT=50]-->
    <string name="error_saving_pet">Error with saving pet</string>
 
-    <!-- Toast text when pet saving is successful [CHAR LIMIT=50]-->
-   <string name="pet_saved">Pet saved</string>
+    <!-- Toast text when pet saving ends with error [CHAR LIMIT=50]-->
+    <string name="error_updating_pet">Error with updating pet</string>
 
-   <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+      <!-- Toast text when pet saving is successful [CHAR LIMIT=50]-->
+    <string name="pet_saved">Pet saved</string>
+
+    <!-- Toast text when pet saving is successful [CHAR LIMIT=50]-->
+    <string name="pet_updated">Pet updated</string>
+
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
 
     <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
