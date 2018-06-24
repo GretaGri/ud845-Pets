@@ -16,6 +16,7 @@
 package com.example.android.pets;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -28,10 +29,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
+
+import static android.content.ContentUris.withAppendedId;
+
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -69,6 +74,16 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         // Attach cursor adapter to the ListView
         petList.setAdapter(petAdapter);
+
+        petList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent openEditorActivity = new Intent(CatalogActivity.this, EditorActivity.class);
+                Uri itemUri = ContentUris.withAppendedId(PetEntry.CONTENT_URI, id);
+                openEditorActivity.setData(itemUri);
+                startActivity(openEditorActivity);
+            }
+        });
 
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
