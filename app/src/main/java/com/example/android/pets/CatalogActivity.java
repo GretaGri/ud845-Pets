@@ -38,8 +38,6 @@ import android.widget.Toast;
 import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
 
-import static android.content.ContentUris.withAppendedId;
-
 
 /**
  * Displays list of pets that were entered and stored in the app.

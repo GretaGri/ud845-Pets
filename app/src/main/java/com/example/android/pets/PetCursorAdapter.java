@@ -2,6 +2,7 @@ package com.example.android.pets;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ import com.example.android.pets.data.PetContract.PetEntry;
             String breed = cursor.getString(cursor.getColumnIndexOrThrow(PetEntry.COLUMN_PET_BREED));
             // Populate fields with extracted properties
             name.setText(petName);
-            summary.setText(breed);
+            if (TextUtils.isEmpty(breed))summary.setText(R.string.unknown_breed);
+            else summary.setText(breed);
         }
     }
